@@ -1,0 +1,24 @@
+<tw-storydata name="Test Story" startnode="1" creator="" creator-version="" ifid="" zoom="" format="" format-version="" options="" hidden>
+    <tw-passagedata pid="1" name="Start" tags="">
+        Welcome to the start of the game.
+        Go to the [[Next Passage|First Room]].
+    </tw-passagedata>
+    <tw-passagedata pid="2" name="First Room" tags="">
+        This is the first room. It tests basic macros. <link to="Second Room" text="Next Room" />
+    </tw-passagedata>
+    <tw-passagedata pid="3" name="Second Room" tags="">
+
+    </tw-passagedata>
+    <tw-passagedata pid="4" name="Third Room" tags="">
+
+    </tw-passagedata>
+    <tw-passagedata pid="5" name="Example Macro" tags="macro">
+        <% link: to, text %>
+            <% if _text === '' %>
+                [[_to]]
+            <% else %>
+                [[_text|_to]]
+            <% end %>
+        <% end %>
+    </tw-passagedata>
+</tw-storydata>

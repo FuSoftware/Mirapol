@@ -11,8 +11,8 @@ const CONFIG = {
     js : 'src/mirapol.js',
     libs : [
 		//{ local : 'src/lib/jquery-3.3.1.min.js', id : 'jquery', remote : 'https://code.jquery.com/jquery-3.3.1.min.js' },
-		//{ local : 'src/lib/jquery-3.3.1.slim.min.js', id : 'jquery-slim', remote : 'https://code.jquery.com/jquery-3.3.1.slim.min.js' },
-		{ local : 'src/lib/zepto.min.js', id : 'zepto',  remote : 'http://zeptojs.com/zepto.min.js'}
+		{ local : 'src/lib/jquery-3.3.1.slim.min.js', id : 'jquery-slim', remote : 'https://code.jquery.com/jquery-3.3.1.slim.min.js' },
+		//{ local : 'src/lib/zepto.min.js', id : 'zepto',  remote : 'http://zeptojs.com/zepto.min.js'}
 	],
 	debug : {
 		js : 'dist/mirapol-1/debug/js.js',
@@ -34,7 +34,9 @@ const _opt = require('node-getopt').create([
     ['u', 'unminify', 'Suppress minification'],
     ['6', 'es6', 'Keeps the source as ES6 code'],
 	['h', 'help', 'Print this help, then exit.'],
-	['r', 'remote', 'Don\'t include the libs\'s code, onlt links']
+	['r', 'remote', 'Don\'t include the libs\'s code, onlt links'],
+	['d','debug','Generates separate output for each file type in the dist folder'],
+	['t', 'testing', 'Generates a test file using the src/testing/test.html file']
 ]).bindHelp().parse_system();
 
 //Disable minification for es6
@@ -63,7 +65,7 @@ async function twine2Build(){
         js : await minifyJS(CONFIG.js),
 		src : CONFIG.src,
 		out : CONFIG.out,
-		debug: true,
+		debug: _opt.options.debug,
 		format : twine2Format(),
 
 		postProcess(source){
@@ -199,7 +201,7 @@ function assembleLibraries(libs) {
 		libs.forEach(e => {
 			l.push(e.local);
 		});
-		return '<script id="script-libs" type="text/javascript">' + concatFiles(l, contents => contents.replace(/^\n+|\n+$/g, '')) + '</script>';
+		return '<script id="script-libs" type="text/javascript">\n' + concatFiles(l, contents => contents.replace(/^\n+|\n+$/g, '')) + '\n</script>';
 	}
 }
 
@@ -242,6 +244,12 @@ function build(project){
     output = output.replace('{{BUILD_JS}}', () => project.js);
     output = output.replace('{{BUILD_CSS}}', project.css);
 	output = output.replace('{{BUILD_VERSION}}', project.format.name + ' ' + project.format.version);
+
+	//If testing, put the test data in the HTML file
+	if( _opt.options.testing){
+		console.log('Adding test data');
+		output = output.replace('{{STORY_DATA}}', readFile('src/testing/test.html'));
+	}
 	
 	//Output the files as separate if needed
 	if (project.debug === true){

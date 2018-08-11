@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{{STORY_NAME}}</title>
-        <div id="format-version" style="display:none">{{BUILD_VERSION}}</div>
+        <div id="format-version" hidden>{{BUILD_VERSION}}</div>
         <meta charset="UTF-8" />
         <!-- Start CSS -->
         {{BUILD_CSS}
@@ -19,11 +19,7 @@
         <!-- End Format JS -->
     </head>
     <body>
-        <div id="init-screen">
-            <div id="init-no-js"><noscript>JavaScript is required. Please enable it to continue.</noscript></div>
-            <div id="init-lacking">Your browser lacks required capabilities. Please upgrade it or switch to another to continue.</div>
-            <div id="init-loading"><div>Loading</div></div>
-        </div>
+        <div id="main"></div>
         <div id="story-area" hidden>{{STORY_DATA}}</div>
     </body>
 </html>
