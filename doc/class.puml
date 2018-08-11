@@ -1,0 +1,57 @@
+@startuml
+
+
+package vendor {
+    class jQuery << (L,#FF7700) >>
+    class Marked << (L,#FF7700) >>
+}
+
+package Mirapol{
+    package Logic{
+        class StoryFormat{
+
+        }
+
+        class Story{
+            string name
+            string ifid
+            string[] styles
+            string[] scripts
+            Passages[] passages
+            Macros[] macros
+        }
+
+        class Passage{
+            Story parent
+            string name
+            string source
+            HTMLNode[] hooks
+
+            html build()
+            void show()
+            void hide()
+        }
+
+        class Macro{
+
+        }
+    }
+
+    package Interface{
+        class UI{
+            
+        }
+    }
+}
+
+StoryFormat ... Marked
+StoryFormat ... jQuery
+Story ... jQuery
+Passage ... Marked
+Passage ... jQuery
+
+StoryFormat *-- "1" Story
+Story "1" *-- "many" Passage
+Story "1" *-- "many" Macro
+
+@enduml

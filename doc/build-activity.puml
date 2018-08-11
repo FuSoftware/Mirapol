@@ -1,0 +1,31 @@
+@startuml
+start
+:Load required extensions;
+
+fork
+    :rollup the index.js file;
+    :minify the generated JS;
+fork again
+    :clean-css the CSS files;
+end fork
+
+:Gather the metadata from pkg;
+:Render the index.ejs file;
+
+if (twine1) then (yes)
+    :Build to twine1;
+else (no)
+    :Build the twine2;
+endif
+
+:Output JSON to the dist folder;
+
+if(debug-js) then
+    :Output JS to the dist folder;
+endif
+if(debug-css) then
+    :Output CSS to the dist folder;
+endif
+
+end
+@enduml
